@@ -27,7 +27,7 @@ class NearbyPlaces extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).canvasColor,
-      height: MediaQuery.sizeOf(context).height / 3.5,
+      height: MediaQuery.sizeOf(context).height / 5,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

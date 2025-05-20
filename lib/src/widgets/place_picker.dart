@@ -33,6 +33,8 @@ typedef PinWidgetBuilder = Widget Function(
 class PlacePicker extends StatefulWidget {
   static const LatLng defaultLocation = LatLng(37.4219983, -122.084);
 
+
+  final String? cloudMapId;
   /// API key generated from Google Cloud Console. You can get an API key
   /// [here](https://cloud.google.com/maps-platform/)
   final String apiKey;
@@ -180,13 +182,16 @@ class PlacePicker extends StatefulWidget {
 
   /// True if the map should show a toolbar when you interact with the map. Android only.
   final bool mapToolbarEnabled;
+  final Widget confirmButton;
 
   const PlacePicker({
     super.key,
     required this.apiKey,
+    required this.confirmButton,
     this.mapsBaseUrl = 'https://maps.googleapis.com/maps/api/',
     this.mapsApiHeaders,
     this.mapsHttpClient,
+    this.cloudMapId,
     this.onMapCreated,
     this.initialLocation,
     this.onPlacePicked,
@@ -358,11 +363,12 @@ class PlacePickerState extends State<PlacePicker>
     return Material(
       child: Column(
         children: <Widget>[
+          if (widget.enableNearbyPlaces) _buildNearbyPlaces(),
           Expanded(
             child: _canLoadMap ? _buildMapContent() : _buildLoadingIndicator(),
           ),
-          _buildSelectedPlace(),
-          if (widget.enableNearbyPlaces) _buildNearbyPlaces(),
+          widget.confirmButton,
+          //_buildSelectedPlace(),
         ],
       ),
     );
@@ -406,6 +412,7 @@ class PlacePickerState extends State<PlacePicker>
       myLocationButtonEnabled: widget.myLocationButtonEnabled,
       compassEnabled: widget.compassEnabled,
       mapToolbarEnabled: widget.mapToolbarEnabled,
+      cloudMapId: widget.cloudMapId,
     );
   }
 
