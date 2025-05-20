@@ -183,11 +183,13 @@ class PlacePicker extends StatefulWidget {
   /// True if the map should show a toolbar when you interact with the map. Android only.
   final bool mapToolbarEnabled;
   final Widget confirmButton;
+  final Function(LatLng)? onNewPosition;
 
   const PlacePicker({
     super.key,
     required this.apiKey,
     required this.confirmButton,
+    this.onNewPosition,
     this.mapsBaseUrl = 'https://maps.googleapis.com/maps/api/',
     this.mapsApiHeaders,
     this.mapsHttpClient,
@@ -379,7 +381,7 @@ class PlacePickerState extends State<PlacePicker>
       children: [
         _buildGoogleMap(),
         if (widget.showSearchInput) _buildSearchInput(),
-        if (widget.myLocationButtonEnabled) _buildMyLocationButton(),
+        // if (widget.myLocationButtonEnabled) _buildMyLocationButton(),
         if (widget.usePinPointingSearch) _buildPinPointingIndicator(),
       ],
     );
@@ -518,13 +520,13 @@ class PlacePickerState extends State<PlacePicker>
   /// On Camera move
   void onCameraMove(CameraPosition position) {
     if (_isAnimating) return;
-
     /// set current camera position
     /// when map is dragging
     cameraPosition = position;
 
     /// set zoom level
     _zoom = position.zoom;
+    if(widget.onNewPosition!=null) widget.onNewPosition!(position.target);
   }
 
   /// On user taps map
