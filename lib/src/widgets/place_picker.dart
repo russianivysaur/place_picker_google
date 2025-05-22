@@ -500,6 +500,10 @@ class PlacePickerState extends State<PlacePicker>
       _debouncePinPointing(cameraPosition!.target);
     }
 
+
+    if(widget.onNewPosition!=null && cameraPosition!=null) widget.onNewPosition!(cameraPosition!.target);
+
+
     setState(() {
       _pinState = PinState.idle;
     });
@@ -526,7 +530,6 @@ class PlacePickerState extends State<PlacePicker>
 
     /// set zoom level
     _zoom = position.zoom;
-    if(widget.onNewPosition!=null) widget.onNewPosition!(position.target);
   }
 
   /// On user taps map
